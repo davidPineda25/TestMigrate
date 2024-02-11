@@ -1,9 +1,24 @@
+using Microsoft.EntityFrameworkCore;
+using Test.Infrastructure.Migrations;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<TestMigrateDbContext>(options => 
+{
+    try
+    {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("EdConnection"));
+    }
+    catch (Exception ex)
+    {
+        // Manejar el error de configuración de la base de datos aquí
+        Console.WriteLine($"Error configuring database: {ex.Message}");
+    }
+});
 
 var app = builder.Build();
 

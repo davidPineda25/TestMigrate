@@ -6,4 +6,7 @@ public class Product{
     public string ProductName { get; set; } = null!;
     public string Content { get; set; } = null!;
     public decimal Price { get; set; }
+
+    public Guid CategoryId { get; set; }
+    public Category Category { get; set; } = null!;
 }
