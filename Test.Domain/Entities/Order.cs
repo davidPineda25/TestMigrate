@@ -10,5 +10,8 @@ public class Order{
     public Customer Customer {get; set;} = null!;
 
     public ICollection<DetailOrder> DetailOrder = null!;
-    
+
+    public ICollection<DetailOrderCustomer> DetailOrderClient { get; set; } = null!;
+
+  
 }

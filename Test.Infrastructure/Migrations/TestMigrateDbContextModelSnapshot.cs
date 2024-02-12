@@ -124,6 +124,30 @@ namespace Test.Infrastructure.Migrations
                     b.ToTable("DetailOrder");
                 });
 
+            modelBuilder.Entity("Test.Domain.Entities.DetailOrderCustomer", b =>
+                {
+                    b.Property<Guid>("IdDetailOrderCustomer")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerIdCustomer")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdCustomer")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdOrder")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("IdDetailOrderCustomer");
+
+                    b.HasIndex("CustomerIdCustomer");
+
+                    b.HasIndex("IdOrder");
+
+                    b.ToTable("DetailOrderCustomer");
+                });
+
             modelBuilder.Entity("Test.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("IdOrder")
@@ -211,6 +235,25 @@ namespace Test.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Test.Domain.Entities.DetailOrderCustomer", b =>
+                {
+                    b.HasOne("Test.Domain.Entities.Customer", "Customer")
+                        .WithMany("DetailOrderClient")
+                        .HasForeignKey("CustomerIdCustomer")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Test.Domain.Entities.Order", "Order")
+                        .WithMany("DetailOrderClient")
+                        .HasForeignKey("IdOrder")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("Test.Domain.Entities.Order", b =>
                 {
                     b.HasOne("Test.Domain.Entities.Customer", "Customer")
@@ -240,7 +283,14 @@ namespace Test.Infrastructure.Migrations
 
             modelBuilder.Entity("Test.Domain.Entities.Customer", b =>
                 {
+                    b.Navigation("DetailOrderClient");
+
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Test.Domain.Entities.Order", b =>
+                {
+                    b.Navigation("DetailOrderClient");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,4 +8,5 @@ public class Customer{
     public string Email { get; set; } = null!;
     
     public ICollection<Order> Order { get; set; } = null!;
+    public ICollection<DetailOrderCustomer> DetailOrderClient { get; set; } = null!;
 }

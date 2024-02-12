@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Test.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class SecondMigration : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -135,6 +135,31 @@ namespace Test.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "DetailOrderCustomer",
+                columns: table => new
+                {
+                    IdDetailOrderCustomer = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdOrder = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdCustomer = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerIdCustomer = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DetailOrderCustomer", x => x.IdDetailOrderCustomer);
+                    table.ForeignKey(
+                        name: "FK_DetailOrderCustomer_Customer_CustomerIdCustomer",
+                        column: x => x.CustomerIdCustomer,
+                        principalTable: "Customer",
+                        principalColumn: "IdCustomer",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DetailOrderCustomer_Order_IdOrder",
+                        column: x => x.IdOrder,
+                        principalTable: "Order",
+                        principalColumn: "IdOrder");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comment_CustomerIdCustomer",
                 table: "Comment",
@@ -154,6 +179,16 @@ namespace Test.Infrastructure.Migrations
                 name: "IX_DetailOrder_ProductIdProduct",
                 table: "DetailOrder",
                 column: "ProductIdProduct");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetailOrderCustomer_CustomerIdCustomer",
+                table: "DetailOrderCustomer",
+                column: "CustomerIdCustomer");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetailOrderCustomer_IdOrder",
+                table: "DetailOrderCustomer",
+                column: "IdOrder");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_CustomerIdCustomer",
@@ -176,16 +211,19 @@ namespace Test.Infrastructure.Migrations
                 name: "DetailOrder");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "DetailOrderCustomer");
 
             migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "Order");
 
             migrationBuilder.DropTable(
                 name: "Category");
+
+            migrationBuilder.DropTable(
+                name: "Customer");
         }
     }
 }
